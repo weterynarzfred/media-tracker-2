@@ -7,5 +7,11 @@
     display: table;
     border-collapse: collapse;
     border: 1px solid $colorTableBorder;
+    margin-bottom: 0.5rem;
+  }
+
+  .button--add-entry {
+    display: block;
+    margin-left: auto;
   }
 }

@@ -5,8 +5,6 @@ import { ACTION_TYPES } from "@/clientSide/mainReducer";
 import editEntry from "@/clientSide/editEntry";
 
 function getDetails(entry) {
-  if (entry === undefined) return <div className="placeholder">no entry selected</div>;
-
   return <>
     <table>
       <tbody>
@@ -15,23 +13,25 @@ function getDetails(entry) {
           <td><input
             type="text"
             name="id"
-            value={entry.id}
+            value={entry?.id ?? -1}
             readOnly={true}
           /></td>
         </tr>
         <tr>
           <td>name</td>
           <td><TextareaAutosize
-            key={entry.id}
+            key={entry?.id}
             name="name"
             placeholder="name"
             autoComplete="off"
-            defaultValue={entry.name}
+            defaultValue={entry?.name}
           /></td>
         </tr>
       </tbody>
     </table>
-    <button type="submit">submit</button>
+    <button type="submit" className="button button--edit-entry">
+      {entry === undefined ? "add" : "save"}
+    </button>
   </>;
 }
 
@@ -41,7 +41,7 @@ function handleSubmit(dispatch, entry, event) {
 
   editEntry({
     form: formData,
-    isNew: entry === undefined, //TODO: adding new entries
+    isNew: entry === undefined,
     callback: data => {
       dispatch({
         type: ACTION_TYPES.EDIT_ENTRY,
@@ -57,7 +57,6 @@ export default function EntryDetails() {
   const entry = state.entries[state.selectedEntryId];
 
   return <div className="EntryDetails">
-    <h2>entry details</h2>
     <form onSubmit={handleSubmit.bind(null, dispatch, entry)}>
       {getDetails(entry)}
     </form>
