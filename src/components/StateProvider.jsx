@@ -9,7 +9,7 @@ function useValue() {
   const [state, dispatch] = useReducer(produce(mainReducer), {});
 
   useEffect(() => {
-    (async () => dispatch({ type: ACTION_TYPES.INIT, ...await getInit() }))();
+    (async () => dispatch({ type: ACTION_TYPES.INIT, payload: await getInit() }))();
   }, []);
 
   return [state, dispatch];

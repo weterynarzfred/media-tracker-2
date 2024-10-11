@@ -17,9 +17,7 @@ export default async function getInit() {
   });
 
   return {
-    data: {
-      entries: entriesResponse.entries,
-      optionHints: optionHintsResponse,
-    }
+    entries: entriesResponse.entries,
+    optionHints: optionHintsResponse,
   };
 }
