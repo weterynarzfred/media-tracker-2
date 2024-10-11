@@ -1,10 +1,10 @@
 import { ACTION_TYPES } from "@/clientSide/mainReducer";
 import EntryListItem from "@/components/EntryListItem";
-import { useDispatch, useState } from "@/components/StateProvider";
+import { useDispatch, useTrackedState } from "@/components/StateProvider";
 
 export default function EntryList() {
   const dispatch = useDispatch();
-  const state = useState();
+  const state = useTrackedState();
 
   function handleAddNewButton() {
     dispatch({

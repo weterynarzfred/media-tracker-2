@@ -1,6 +1,6 @@
 import TextareaAutosize from "react-textarea-autosize";
 
-import { useDispatch, useState } from "@/components/StateProvider";
+import { useDispatch, useTrackedState } from "@/components/StateProvider";
 import { ACTION_TYPES } from "@/clientSide/mainReducer";
 import editEntry from "@/clientSide/editEntry";
 
@@ -53,7 +53,7 @@ function handleSubmit(dispatch, entry, event) {
 
 export default function EntryDetails() {
   const dispatch = useDispatch();
-  const state = useState();
+  const state = useTrackedState();
   const entry = state.entries[state.selectedEntryId];
 
   return <div className="EntryDetails">

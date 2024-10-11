@@ -1,9 +1,9 @@
 import { ACTION_TYPES } from "@/clientSide/mainReducer";
-import { useDispatch, useState } from "@/components/StateProvider";
+import { useDispatch, useTrackedState } from "@/components/StateProvider";
 
 export default function EntryListItem({ entryId }) {
   const dispatch = useDispatch();
-  const state = useState();
+  const state = useTrackedState();
   const entry = state.entries[entryId];
   if (entry === undefined) return null;
 

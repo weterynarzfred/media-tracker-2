@@ -24,6 +24,6 @@ export default function StateProvider({ children }) {
 }
 
 export {
-  useTrackedState as useState,
+  useTrackedState,
   useUpdate as useDispatch,
 };
