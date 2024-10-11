@@ -1,6 +1,7 @@
 const ACTION_TYPES = {
   INIT: 'INIT',
   SELECT_ENTRY: 'SELECT_ENTRY',
+  EDIT_ENTRY: 'EDIT_ENTRY',
 };
 
 const actions = {
@@ -10,6 +11,9 @@ const actions = {
   },
   SELECT_ENTRY: (state, action) => {
     state.selectedEntryId = action.payload.entryId;
+  },
+  EDIT_ENTRY: (state, action) => {
+    state.entries[action.payload.entry.id] = action.payload.entry;
   },
 };
 

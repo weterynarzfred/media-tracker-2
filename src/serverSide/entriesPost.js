@@ -17,14 +17,16 @@ const HINTED_FIELDS = [
  */
 async function parseForm(req) {
   const form = formidable({ filter: part => part.originalFilename !== '' });
-  return { fields, files } = await form.parse(req);
+  const [fields, files] = await form.parse(req);
+  return { fields, files };
 }
 
 /**
  * create new entry object with updated fields
  */
 async function makeEntry({ req, data, didExist }) {
-  const form = parseForm(req);
+  const form = await parseForm(req);
+  console.log(form);
 
   const entry = {
     id: didExist ? parseInt(req.query.id?.[0]) : data.nextEntryId++,
