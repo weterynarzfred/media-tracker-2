@@ -1,0 +1,36 @@
+.EntryListItem {
+  display: table-row;
+  cursor: pointer;
+
+  &:nth-child(2n) {
+    background-color: $colorBg0;
+  }
+
+  &:nth-child(2n + 1) {
+    background-color: $colorBg1;
+  }
+
+  &:hover {
+    background-color: $colorBg2;
+  }
+
+  .cell {
+    display: table-cell;
+    border: solid $colorTableBorder;
+    border-width: 0 1px;
+    padding: 2px 6px;
+    font-size: 14px;
+
+    &:first-child {
+      border-left: none;
+    }
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  &__id {
+    width: 2rem;
+  }
+}

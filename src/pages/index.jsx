@@ -1,11 +1,11 @@
-import EntryList from "@/components/EntryList";
+import MainView from "@/components/MainView";
 import StateProvider from "@/components/StateProvider";
 
 export default function Home() {
   return (
     <main className="main">
       <StateProvider >
-        <EntryList />
+        <MainView />
       </StateProvider>
     </main>
   );

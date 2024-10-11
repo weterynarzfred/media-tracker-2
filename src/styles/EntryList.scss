@@ -1,0 +1,11 @@
+.EntryList {
+  border: 1px solid $colorContent0;
+  padding: 2rem;
+
+  &__table {
+    width: 100%;
+    display: table;
+    border-collapse: collapse;
+    border: 1px solid $colorTableBorder;
+  }
+}
