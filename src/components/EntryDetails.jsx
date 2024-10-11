@@ -3,8 +3,35 @@ import TextareaAutosize from "react-textarea-autosize";
 import { useDispatch, useTrackedState } from "@/components/StateProvider";
 import { ACTION_TYPES } from "@/clientSide/mainReducer";
 import editEntry from "@/clientSide/editEntry";
+import FIELDS from "@/lib/fields";
 
 function getDetails(entry) {
+  const inputRows = FIELDS.map(field => {
+    let input = null;
+    if (field.type === 'text') {
+      input = <input
+        key={entry?.id}
+        type="text"
+        name={field.name}
+        placeholder={field.name}
+        defaultValue={entry?.[field.name]}
+      />;
+    } else if (field.type === 'textarea') {
+      input = <TextareaAutosize
+        key={entry?.id}
+        name={field.name}
+        placeholder={field.name}
+        autoComplete="off"
+        defaultValue={entry?.[field.name]}
+      />;
+    }
+
+    return <tr key={field.name}>
+      <td>{field.name}</td>
+      <td>{input}</td>
+    </tr>;
+  });
+
   return <>
     <table>
       <tbody>
@@ -17,16 +44,7 @@ function getDetails(entry) {
             readOnly={true}
           /></td>
         </tr>
-        <tr>
-          <td>name</td>
-          <td><TextareaAutosize
-            key={entry?.id}
-            name="name"
-            placeholder="name"
-            autoComplete="off"
-            defaultValue={entry?.name}
-          /></td>
-        </tr>
+        {inputRows}
       </tbody>
     </table>
     <button type="submit" className="button button--edit-entry">

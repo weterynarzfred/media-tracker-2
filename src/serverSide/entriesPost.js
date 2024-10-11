@@ -4,13 +4,7 @@ import { isEmpty } from "lodash";
 import { getDB, saveDB } from "@/serverSide/db";
 import saveImage from "@/serverSide/saveImage";
 import handlers from "@/serverSide/handlers/handlersIndex";
-
-const HINTED_FIELDS = [
-  'type',
-  'creator',
-  'language',
-  'status',
-];
+import FIELDS from "@/lib/fields";
 
 /**
  *  get fields and files from the form
@@ -26,23 +20,22 @@ async function parseForm(req) {
  */
 async function makeEntry({ req, data, didExist }) {
   const form = await parseForm(req);
-  console.log(form);
 
   const entry = {
     id: didExist ? parseInt(req.query.id?.[0]) : data.nextEntryId++,
     cover: isEmpty(form.fields.cover?.[0]) ? null : form.fields.cover[0],
     handlerKeys: isEmpty(handlers[form.fields.handlerKeys?.[0]]) ? null : form.fields.handlerKeys,
-    name: isEmpty(form.fields.name?.[0]) ? null : form.fields.name[0],
-    score: isEmpty(form.fields.score?.[0]) ? null : parseFloat(form.fields.score[0]),
-    counts: {
-      seen: isEmpty(form.fields.countSeen?.[0]) ? null : form.fields.countSeen[0],
-      out: isEmpty(form.fields.countOut?.[0]) ? null : form.fields.countOut[0],
-    },
   };
 
-  for (const fieldName of HINTED_FIELDS) {
-    if (isEmpty(form.fields[fieldName]?.[0])) continue;
-    entry[fieldName] = form.fields[fieldName][0];
+  for (const field of FIELDS) {
+    if (isEmpty(form.fields[field.name]?.[0])) {
+      entry[field.name] = null;
+      continue;
+    }
+
+    entry[field.name] = form.fields[field.name][0];
+    if (typeof field.parse === 'function')
+      entry[field.name] = field.parse(entry[field.name]);
   }
 
   // replace or add cover if a new file was sent
@@ -55,7 +48,8 @@ async function makeEntry({ req, data, didExist }) {
 }
 
 async function updateData(data, entry) {
-  for (const fieldName of HINTED_FIELDS) {
+
+  for (const fieldName of FIELDS.filter(e => e.type === 'hinted')) {
     if (isEmpty(entry[fieldName])) continue;
 
     // add new hints to the db
