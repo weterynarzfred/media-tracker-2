@@ -1,3 +1,7 @@
+import { isEmpty } from "lodash";
+
+import FIELDS from "@/lib/fields";
+
 const ACTION_TYPES = {
   INIT: 'INIT',
   SELECT_ENTRY: 'SELECT_ENTRY',
@@ -14,6 +18,15 @@ const actions = {
   },
   EDIT_ENTRY: (state, action) => {
     state.entries[action.payload.entry.id] = action.payload.entry;
+
+    for (const field of FIELDS.filter(e => e.type === 'hinted')) {
+      if (isEmpty(action.payload.entry[field.name])) continue;
+
+      if (state.optionHints[field.name] === undefined)
+        state.optionHints[field.name] = [];
+      if (!state.optionHints[field.name].includes(action.payload.entry[field.name]))
+        state.optionHints[field.name].push(action.payload.entry[field.name]);
+    }
   },
 };
 

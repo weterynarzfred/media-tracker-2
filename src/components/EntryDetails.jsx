@@ -1,11 +1,14 @@
 import TextareaAutosize from "react-textarea-autosize";
+import CreatableSelect from 'react-select/creatable';
+import { isEmpty } from "lodash";
 
 import { useDispatch, useTrackedState } from "@/components/StateProvider";
 import { ACTION_TYPES } from "@/clientSide/mainReducer";
 import editEntry from "@/clientSide/editEntry";
 import FIELDS from "@/lib/fields";
+import selectStyles from "@/clientSide/selectStyles";
 
-function getDetails(entry) {
+function getDetails(entry, optionHints) {
   const inputRows = FIELDS.map(field => {
     let input = null;
     if (field.type === 'text') {
@@ -23,6 +26,22 @@ function getDetails(entry) {
         placeholder={field.name}
         autoComplete="off"
         defaultValue={entry?.[field.name]}
+      />;
+    } else if (field.type === 'hinted') {
+      const options = optionHints[field.name]?.map(value => ({ value, label: value })) ?? [];
+      const option = isEmpty(entry?.[field.name]) ? undefined : { value: entry[field.name], label: entry[field.name] };
+      input = <CreatableSelect
+        key={entry?.id}
+        name={field.name}
+        placeholder=""
+        options={options}
+        defaultValue={option}
+        isClearable={true}
+        isSearchable={true}
+        className='select'
+        classNamePrefix='select'
+        styles={selectStyles}
+        noOptionsMessage={() => `start typing to create new ${field.name}`}
       />;
     }
 
@@ -76,7 +95,7 @@ export default function EntryDetails() {
 
   return <div className="EntryDetails">
     <form onSubmit={handleSubmit.bind(null, dispatch, entry)}>
-      {getDetails(entry)}
+      {getDetails(entry, state.optionHints)}
     </form>
   </div>;
 }

@@ -48,15 +48,14 @@ async function makeEntry({ req, data, didExist }) {
 }
 
 async function updateData(data, entry) {
-
-  for (const fieldName of FIELDS.filter(e => e.type === 'hinted')) {
-    if (isEmpty(entry[fieldName])) continue;
+  for (const field of FIELDS.filter(e => e.type === 'hinted')) {
+    if (isEmpty(entry[field.name])) continue;
 
     // add new hints to the db
-    if (data.optionHints[fieldName] === undefined)
-      data.optionHints[fieldName] = [];
-    if (!data.optionHints[fieldName].includes(entry[fieldName]))
-      data.optionHints[fieldName].push(entry[fieldName]);
+    if (data.optionHints[field.name] === undefined)
+      data.optionHints[field.name] = [];
+    if (!data.optionHints[field.name].includes(entry[field.name]))
+      data.optionHints[field.name].push(entry[field.name]);
   }
 
   data.entries[entry.id] = entry;
