@@ -49,13 +49,35 @@ async function makeEntry({ req, data, didExist }) {
 
 async function updateData(data, entry) {
   for (const field of FIELDS.filter(e => e.type === 'hinted')) {
-    if (isEmpty(entry[field.name])) continue;
+    const prevValue = data.entries[entry.id]?.[field.name] ?? undefined;
+    const currentValue = entry[field.name] ?? undefined;
+    if (prevValue === currentValue) continue;
 
-    // add new hints to the db
-    if (data.optionHints[field.name] === undefined)
-      data.optionHints[field.name] = [];
-    if (!data.optionHints[field.name].includes(entry[field.name]))
-      data.optionHints[field.name].push(entry[field.name]);
+    // if the value was defined and now is different check if the old value
+    // still exists elsewhere, delte it from hints if not
+    if (prevValue !== undefined) {
+      let doesStillExist = false;
+      for (const testEntryId in data.entries) {
+        if (parseInt(testEntryId) === entry.id) continue;
+
+        const testEntry = data.entries[testEntryId];
+        if (testEntry[field.name] === prevValue) {
+          doesStillExist = true;
+          break;
+        }
+      }
+
+      if (!doesStillExist) {
+        data.optionHints[field.name].splice(data.optionHints[field.name].indexOf(prevValue), 1);
+      }
+    }
+
+    if (currentValue !== undefined) {
+      if (data.optionHints[field.name] === undefined)
+        data.optionHints[field.name] = [];
+      if (!data.optionHints[field.name].includes(currentValue))
+        data.optionHints[field.name].push(currentValue);
+    }
   }
 
   data.entries[entry.id] = entry;
