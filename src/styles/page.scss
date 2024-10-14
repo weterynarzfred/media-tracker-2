@@ -6,6 +6,7 @@ h2 {
 
 .button {
   text-transform: uppercase;
+  letter-spacing: 0.1em;
   font-size: 12px;
   padding: 5px 10px;
   background-color: $colorBg1;
@@ -13,5 +14,18 @@ h2 {
 
   &:hover {
     background-color: $colorBg2;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &--danger {
+    background-color: $colorBg0;
+
+    &:hover {
+      background-color: $colorRed;
+    }
   }
 }

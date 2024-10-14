@@ -5,6 +5,7 @@ import { getDB, saveDB } from "@/serverSide/db";
 import saveImage from "@/serverSide/saveImage";
 import handlers from "@/serverSide/handlers/handlersIndex";
 import FIELDS from "@/lib/fields";
+import { clearHintIfNotExists } from "@/serverSide/entriesDelete";
 
 /**
  *  get fields and files from the form
@@ -56,20 +57,12 @@ async function updateData(data, entry) {
     // if the value was defined and now is different check if the old value
     // still exists elsewhere, delte it from hints if not
     if (prevValue !== undefined) {
-      let doesStillExist = false;
-      for (const testEntryId in data.entries) {
-        if (parseInt(testEntryId) === entry.id) continue;
-
-        const testEntry = data.entries[testEntryId];
-        if (testEntry[field.name] === prevValue) {
-          doesStillExist = true;
-          break;
-        }
-      }
-
-      if (!doesStillExist) {
-        data.optionHints[field.name].splice(data.optionHints[field.name].indexOf(prevValue), 1);
-      }
+      clearHintIfNotExists({
+        data,
+        hintValue: prevValue,
+        hintKey: field.name,
+        excludeEntryId: entry.id,
+      });
     }
 
     if (currentValue !== undefined) {

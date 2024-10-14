@@ -1,4 +1,32 @@
 .EntryDetails {
   border: 1px solid $colorContent0;
   padding: 2rem;
+
+  &__table {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+
+  .button--delete-entry {
+    margin-right: auto;
+  }
+
+  &__delete {
+    font-size: 14px;
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  &__delete-buttons {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
 }

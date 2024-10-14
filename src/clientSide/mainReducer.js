@@ -6,6 +6,7 @@ const ACTION_TYPES = {
   INIT: 'INIT',
   SELECT_ENTRY: 'SELECT_ENTRY',
   EDIT_ENTRY: 'EDIT_ENTRY',
+  DELETE_ENTRY: 'DELETE_ENTRY',
 };
 
 const actions = {
@@ -27,7 +28,13 @@ const actions = {
       if (!state.optionHints[field.name].includes(action.payload.entry[field.name]))
         state.optionHints[field.name].push(action.payload.entry[field.name]);
     }
+
+    state.selectedEntryId = action.payload.entry.id;
   },
+  DELETE_ENTRY: (state, action) => {
+    delete state.entries[action.payload.entryId];
+    state.selectedEntryId = -1;
+  }
 };
 
 export default function mainReducer(state, action) {

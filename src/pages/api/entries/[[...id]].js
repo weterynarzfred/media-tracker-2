@@ -1,14 +1,14 @@
 import entriesGet from "@/serverSide/entriesGet";
 import entriesPost from "@/serverSide/entriesPost";
 // import entriesPatch from "@/serverSide/entriesPatch";
-// import entriesDelete from "@/serverSide/entriesDelete";
+import entriesDelete from "@/serverSide/entriesDelete";
 
 const METHOD_HANDLERS = {
   GET: entriesGet,
   POST: entriesPost,
   PUT: entriesPost,
   // PATCH: entriesPatch,
-  // DELETE: entriesDelete,
+  DELETE: entriesDelete,
 };
 
 export default async function handler(req, res) {
